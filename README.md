@@ -1,0 +1,5 @@
+You can download and run this project as is, but if you want to develop your own app using Huawei Health kit, you will have to configure following:
+- Add the SHA256 certificate fingerprint of your signing key. Detailed guide [here](https://developer.huawei.com/consumer/en/codelab/HMSPreparation/index.html#3)
+- Apply for [Huawei Health Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/apply-kitservice-0000001050071707). If you can't find your app in the list, you'll have to apply for [Huawei ID](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/apply-id-0000001050069756) first.
+After enabling Kits and adding SHA256, download `agconnect-services.json` and put it in your app folder.
+If Android studio does not see your Huawei device - switch it to MTP connection mode (file transfer).

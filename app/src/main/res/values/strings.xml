@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Step Counter</string>
+
+    <string name="request_Authorization">Authorize</string>
+    <string name="logo">logo</string>
+    <string name="stop_button_text">STOP</string>
+    <string name="start_button_text">START</string>
+    <string name="authorization_success_text">Permissions granted</string>
+    <string name="steps_text">steps</string>
+</resources>

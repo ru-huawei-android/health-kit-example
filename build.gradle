@@ -1,0 +1,25 @@
+buildscript {
+    ext.kotlin_version = '1.5.30'
+    repositories {
+        maven {url 'https://developer.huawei.com/repo/'}
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.huawei.agconnect:agcp:1.5.2.300'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven {url 'https://developer.huawei.com/repo/'}    //https faster sync unless missing files issue fixed
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
