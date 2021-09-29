@@ -24,6 +24,13 @@ class StepsController(
         onStepsChanged(stepsCount)
     }
 
+    init {
+        started = false
+        val options = HiHealthOptions.builder().build()
+        val hwId = HuaweiIdAuthManager.getExtendedAuthResult(options)
+        autoRecorderController = HuaweiHiHealth.getAutoRecorderController(context, hwId)
+    }
+
     fun start() {
         started = true
         autoRecorderController
@@ -43,19 +50,12 @@ class StepsController(
             .addOnSuccessListener {
                 printToLog("Stopped accessing sensor")
             }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 printToLog("Failed to stop accessing sensor $it")
             }
     }
 
     companion object {
         const val TAG = "StepsController"
-    }
-
-    init {
-        started = false
-        val options = HiHealthOptions.builder().build()
-        val hwId = HuaweiIdAuthManager.getExtendedAuthResult(options)
-        autoRecorderController = HuaweiHiHealth.getAutoRecorderController(context, hwId)
     }
 }

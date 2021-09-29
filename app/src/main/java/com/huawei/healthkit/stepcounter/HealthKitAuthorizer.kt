@@ -13,11 +13,8 @@ class HealthKitAuthorizer(
     private val scopes: List<Scope>,
     val printToLog: (String) -> Unit = { }
 ) {
-    companion object {
-        private const val REQUEST_AUTH = 1002
-        const val TAG = "HealthKitAuthorizer"
-        private var account: AuthHuaweiId? = HuaweiIdAuthManager.getAuthResult()
-    }
+    val permissionsGranted: Boolean
+        get() = (account != null && HuaweiIdAuthManager.containScopes(account, scopes))
 
     fun requestAuth(activity: Activity) {
         val authParamsHelper = HuaweiIdAuthParamsHelper()
@@ -29,9 +26,6 @@ class HealthKitAuthorizer(
             .getService(activity.applicationContext, authParams)
         activity.startActivityForResult(huaweiIdAuthService.signInIntent, REQUEST_AUTH)
     }
-
-    val permissionsGranted: Boolean
-        get() = (account != null && HuaweiIdAuthManager.containScopes(account, scopes))
 
     fun onPermissionRequestResult(
         data: Intent?,
@@ -55,5 +49,11 @@ class HealthKitAuthorizer(
             return
         }
         onSuccess()
+    }
+
+    companion object {
+        private const val REQUEST_AUTH = 1002
+        const val TAG = "HealthKitAuthorizer"
+        private var account: AuthHuaweiId? = HuaweiIdAuthManager.getAuthResult()
     }
 }

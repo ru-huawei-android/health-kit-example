@@ -14,7 +14,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var healthKitAuthorizer: HealthKitAuthorizer
-    private lateinit var stepsController: StepsController
+    private lateinit var stepsController: StepsDataController
     private var logStrings = ArrayDeque(List(15){ "" })
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,20 +45,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun displaySteps() {
         stepsCountText.text = "0"
-        stepsController = StepsController(
+        stepsController = StepsDataController(
             context = this,
-            onStepsChanged = { steps ->
-                CoroutineScope(Main).launch {
-                    val stepsText = steps.toString()
-                    stepsCountText.text = stepsText
-                }
-            },
             printToLog = { message ->
                 printToLogView(StepsController.TAG, message)
             }
         )
         startWalkButton.setOnClickListener {
-            if (!stepsController.started) {
+            if (!stepsController.isActive) {
                 stepsController.start()
                 startWalkButton.text = getString(R.string.stop_button_text)
             } else {
@@ -99,10 +93,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun enableStartButton() {
-        CoroutineScope(Main).launch {
-            startWalkButton.isEnabled = true
-            requestAuthorizationBtn.isEnabled = false
-            requestAuthorizationBtn.text = getString(R.string.authorization_success_text)
-        }
+        startWalkButton.isEnabled = true
+        requestAuthorizationBtn.isEnabled = false
+        requestAuthorizationBtn.text = getString(R.string.authorization_success_text)
     }
 }
