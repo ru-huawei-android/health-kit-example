@@ -14,7 +14,7 @@ class StepsController(
     onStepsChanged: (steps: Int) -> Unit,
     val printToLog: (String) -> Unit = { }
 ) {
-    var started: Boolean
+    var isActive: Boolean
     private val autoRecorderController: AutoRecorderController
     private val onSamplePointListener = OnSamplePointListener { samplePoint ->
         printToLog("steps = ${samplePoint.getFieldValue(Field.FIELD_STEPS)}")
@@ -25,14 +25,14 @@ class StepsController(
     }
 
     init {
-        started = false
+        isActive = false
         val options = HiHealthOptions.builder().build()
         val hwId = HuaweiIdAuthManager.getExtendedAuthResult(options)
         autoRecorderController = HuaweiHiHealth.getAutoRecorderController(context, hwId)
     }
 
     fun start() {
-        started = true
+        isActive = true
         autoRecorderController
             .startRecord(DataType.DT_CONTINUOUS_STEPS_TOTAL, onSamplePointListener)
             .addOnCompleteListener { task: Task<Void?> ->
@@ -45,7 +45,7 @@ class StepsController(
     }
 
     fun stop() {
-        started = false
+        isActive = false
         autoRecorderController.stopRecord(DataType.DT_CONTINUOUS_STEPS_TOTAL, onSamplePointListener)
             .addOnSuccessListener {
                 printToLog("Stopped accessing sensor")
